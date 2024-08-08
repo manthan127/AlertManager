@@ -2,7 +2,8 @@ import UIKit
 
 public extension Alertify {
     /// Present process view on the screen.
-    func showProcessView() { DispatchQueue.main.async { [self] in
+    @MainActor
+    func showProcessView() {
         guard let view = rootVC?.view else {return}
         view.isUserInteractionEnabled = false
         view.addSubview(processView)
@@ -12,14 +13,15 @@ public extension Alertify {
             processView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             processView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
-    }}
+    }
 
     /// Remove process view from the screen.
-    func removeProcessView() { DispatchQueue.main.async { [self] in
+    @MainActor
+    func removeProcessView() {
         if let view = rootVC?.view {
             view.isUserInteractionEnabled = true
         }
         activityView.stopAnimating()
         processView.removeFromSuperview()
-    }}
+    }
 }

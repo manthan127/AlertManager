@@ -25,14 +25,15 @@ public extension Alertify {
     ///   - actions: for the buttons in popup.
     ///   - animated: Pass true to animate the presentation; otherwise, pass false.
     ///   - completion: The block to execute after the presentation finishes. This block has no return value and takes no parameters. You may specify nil for this parameter.
+    @MainActor
     func alert(
         title: String? = nil, message: String? = nil, style: UIAlertController.Style = .alert,
         actions: [UIAlertAction] = [],
         animated: Bool = true, onDismiss: (() -> Void)? = nil
-    ) { DispatchQueue.main.async { [self] in
+    ) {
         let alert = createAlert(title: title, message: message, style: style, actions: actions)
         display(alert: alert, animated: animated, onDismiss: onDismiss)
-    }}
+    }
 
     /// Display alert on the screen.
     /// - Parameters:
@@ -42,27 +43,29 @@ public extension Alertify {
     ///   - actions: for the buttons in popup.
     ///   - animated: Pass true to animate the presentation; otherwise, pass false.
     ///   - completion: The block to execute after the presentation finishes. This block has no return value and takes no parameters. You may specify nil for this parameter.
+    @MainActor
     func alert(
         title: String? = nil, error: Error, style: UIAlertController.Style = .alert,
         actions: [UIAlertAction] = [],
         animated: Bool = true, onDismiss: (() -> Void)? = nil
-    ) { DispatchQueue.main.async { [self] in
+    ) {
         let alert = createAlert(title: title, message: error.localizedDescription, style: style, actions: actions)
         display(alert: alert, animated: animated, onDismiss: onDismiss)
-    }}
+    }
 
     /// Display alert on the screen.
     /// - Parameters:
     ///   - alert: An object that can displays an alert message to the user.
     ///   - animated: Pass true to animate the presentation; otherwise, pass false.
     ///   - completion: The block to execute after the presentation finishes. This block has no return value and takes no parameters. You may specify nil for this parameter.
-    func display(alert: UIAlertController, animated: Bool = true, onDismiss: (() -> Void)? = nil) { DispatchQueue.main.async { [self] in
+    @MainActor
+    func display(alert: UIAlertController, animated: Bool = true, onDismiss: (() -> Void)? = nil) {
         if alert.actions.isEmpty {
             let ok = UIAlertAction(title: "OK", style: .default)
             alert.addAction(ok)
         }
         rootVC?.present(alert, animated: animated, completion: onDismiss)
-    }}
+    }
 }
 
 public extension UIAlertAction {
